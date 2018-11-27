@@ -516,8 +516,12 @@ public class OicSecurityRealm extends SecurityRealm {
             } else {
                 if (containsField(userInfo, groupsFieldName)) {
                     LOGGER.fine("UserInfo contains group field name: " + groupsFieldName + " with value class:" + getField(userInfo, groupsFieldName).getClass());
-                    @SuppressWarnings("unchecked")
-                    List<String> groupNames = (List<String>) getField(userInfo, groupsFieldName);
+		    LOGGER.fine("groups value: " + userInfo.get(groupsFieldName));
+                    String groupNamesValue = String.valueOf(userInfo.get(groupsFieldName));
+                    
+		    @SuppressWarnings("unchecked")
+		    List<String> groupNames = Arrays.asList(groupNamesValue.split(";")); // split "groups" value passed from mokey
+                    //List<String> groupNames = (List<String>) getField(userInfo, groupsFieldName);
                     LOGGER.fine("Number of groups in groupNames: " + groupNames.size());
                     for (String groupName : groupNames) {
                         LOGGER.fine("Adding group from UserInfo: " + groupName);
